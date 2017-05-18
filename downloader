@@ -1,0 +1,33 @@
+import urllib
+import csv
+import os
+import pandas as pd
+from collections import defaultdict
+
+mycsvfile = '6.csv'
+croptype = 'eggplant'
+resource = ""
+columns = defaultdict(list)
+rowcounter = 0
+if os.path.exists(mycsvfile):
+
+ with open(mycsvfile) as f:
+
+    reader = csv.reader(f,delimiter=',')
+    reader.next()
+    for row in reader:
+        print rowcounter
+        rowcounter = rowcounter+1
+        for (index,val) in enumerate(row):
+            if (index == 3):
+                resource = urllib.urlopen(val)
+            if (index == 4):
+                output = open(croptype+'_'+str(rowcounter)+'_'+val.replace(" ",'_')+'.jpg',"wb")
+                output.write(resource.read())
+                output.close()
+            columns[index].append(val.replace(" ",'_'))
+print columns[4]
+
+
+
+
